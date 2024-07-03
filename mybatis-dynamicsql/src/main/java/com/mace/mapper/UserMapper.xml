@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mace.mapper.UserMapper">
+
+    <cache></cache>
+    <resultMap id="userMap" type="user">
+        <result property="password" column="psw"/>
+    </resultMap>
+
+    <sql id="condition">
+        <where>
+            <if test="name != null">
+                name = #{name}
+            </if>
+            <if test="age != null">
+                and age = #{age}
+            </if>
+        </where>
+    </sql>
+
+    <select id="getUserList" resultMap="userMap">
+        select *
+        from mybatis.user
+    </select>
+
+    <select id="getUserById" parameterType="int" resultMap="userMap">
+        select *
+        from mybatis.user
+        where id = #{id}
+    </select>
+
+    <select id="getUserListByCondition" parameterType="map" resultMap="userMap">
+        select * from user
+        <include refid="condition"/>
+    </select>
+
+    <insert id="insertUser" parameterType="user">
+        insert into mybatis.user(id, name, psw, age, sex)
+        values (#{id}, #{name}, #{password}, #{age}, #{sex})
+    </insert>
+
+    <update id="updateUser" parameterType="map">
+        update user
+        <set>
+            <if test="new_name != null">
+                name = #{new_name}
+            </if>
+            <if test="new_age != null">
+                age = #{new_age}
+            </if>
+        </set>
+        <include refid="condition"/>
+    </update>
+
+    <delete id="deleteUser" parameterType="int">
+        delete
+        from user
+        where id = #{id}
+    </delete>
+
+    <select id="getUserLike" parameterType="string" resultType="user">
+        select *
+        from user
+        where name like #{value} "%"
+    </select>
+
+</mapper>

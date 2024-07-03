@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!--属性配置-->
+    <properties resource="db.properties"></properties>
+
+    <settings>
+        <setting name="logImpl" value="STDOUT_LOGGING"/>
+    </settings>
+    <!--别名配置-->
+    <typeAliases>
+        <package name="com.mace.pojo"></package>
+    </typeAliases>
+    <!--环境配置-->
+    <environments default="development">
+        <environment id="development">
+            <!--<transactionManager type="MANAGED"/>-->
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${driver}"/>
+                <property name="url" value="${url}"/>
+                <property name="username" value="${username}"/>
+                <property name="password" value="${password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <!--映射器配置-->
+    <mappers>
+        <!--
+            我的理解是，xml配置文件映射类，而不是类映射配置文件，所以采用class配置的时候，假如class名和xml不同名，那么class就无法找到xml
+            如果使用注解方式开发，那么必须使用class，因为没有xml文件了，但是注解的局限性很大，比如属性名不一样，复杂查询实现难度大。
+            而xml找类的话，因为xml里面可以拿到类的权限定名，是可以拿到类的，类名和xml不同名也可以
+            推荐使用resource配置
+        -->
+        <!--<mapper resource="com/mace/mapper/UserMapper.xml"/>-->
+        <mapper class="com.mace.mapper.UserMapper"/>
+    </mappers>
+</configuration>
